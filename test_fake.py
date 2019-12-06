@@ -5,6 +5,7 @@
 import os.path as osp
 import csv
 import cv2
+from tqdm import tqdm
 import numpy as np
 import torch
 import torchvision
@@ -187,11 +188,9 @@ def run_model(model, is_fake=True):
     size = len(lines)
     disturb = 0
     fake = 0
-    for id, true, target in lines:
+    for id, true, target in tqdm(lines):
         # if id != '0c7ac4a8c9dfa802.png':
         #     continue
-        if id != '137ab6ca314e9e35.png':
-            continue
         src_path = osp.join('images', id)
         fake_path = osp.join('fake_images', id) if is_fake else osp.join('images', id)
 

@@ -5,6 +5,7 @@
 import os.path as osp
 import csv
 import cv2
+from tqdm import tqdm
 import numpy as np
 import torch
 import torch.nn as nn
@@ -173,7 +174,7 @@ def run_model(model):
     loss = torch.nn.CrossEntropyLoss()
 
     lines = load_dev('dev.csv')
-    for id, true, target in lines:
+    for id, true, target in tqdm(lines):
         true = int(true)
         target = int(target)
 
@@ -197,10 +198,9 @@ def run_model(model):
             pred = np.argmax(x) + 1
 
             inv_image = process_image_inv(v.cpu().detach().numpy(), src_image)
-            dis = distance(src_image.copy(), v.cpu().detach().numpy().copy())
+            # dis = distance(src_image.copy(), v.cpu().detach().numpy().copy())
 
-            print(dis)
-            # if target == pred and cnt >= 1000:
+            # print(dis)
             if cnt >= 1000:
                 print(pred)
                 cv2.imwrite(osp.join('fake_images', id), inv_image)

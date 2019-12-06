@@ -2,3 +2,4 @@ source: 85 0
 resize no center crop: 62 0
 resnet152: 256->224: 28 0
 resnet152: fake: 256->224: 276 0
+resnet152: fake: 256->224: 292 0
