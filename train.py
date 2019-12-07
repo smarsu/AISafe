@@ -65,8 +65,8 @@ def test(model, is_fake=True):
 
 def run_model(model):
   """Train the fake model."""
-  # loss = nn.MSELoss()
-  loss = nn.CrossEntropyLoss()
+  loss = nn.MSELoss()
+  # loss = nn.CrossEntropyLoss()
 
   lines = utils.load_dev('dev.csv')
   for id, true, target in tqdm(lines):
@@ -103,9 +103,9 @@ def run_model(model):
         cv2.imwrite(osp.join('fake_images', id), last_image)
         break
 
-      output = loss(pred, torch.from_numpy(np.array([target - 1])).cuda())
+      # output = loss(pred, torch.from_numpy(np.array([target - 1])).cuda())
       # output = loss(pred, torch.from_numpy(np.array(utils.onehot(target - 1), dtype=np.float32)).cuda())
-      # output = loss(pred, torch.from_numpy(np.array(utils.onehot_reverse(true - 1), dtype=np.float32)).cuda())
+      output = loss(pred, torch.from_numpy(np.array(utils.onehot_reverse(true - 1), dtype=np.float32)).cuda())
       output.backward()
       optimizer.step()
 
