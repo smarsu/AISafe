@@ -17,8 +17,7 @@ try:
 except ImportError:
     from torch.utils.model_zoo import load_url as load_state_dict_from_url
 
-import resnet
-import mobilenet
+from networks import resnet, mobilenet
 
 
 def resnet50():
