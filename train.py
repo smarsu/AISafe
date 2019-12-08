@@ -38,11 +38,13 @@ def process_inv(img, src_img):
 
 def test(model, is_fake=True):
   lines = utils.load_dev('dev.csv')
+  disturb = 0
+  fake = 0
   for id, true, target in tqdm(lines):
     # if id != '0c7ac4a8c9dfa802.png':
     #     continue
-    if id != '62ebd5f7ce015380.png':
-      continue
+    # if id != '0c7ac4a8c9dfa802.png':
+    #   continue
 
     root = 'fake_images' if is_fake else 'images'
     src_img = cv2.imread(osp.join(root, id))
@@ -50,6 +52,7 @@ def test(model, is_fake=True):
     target = int(target)
 
     last_image = src_img.astype(np.float32)
+
     if True:
       processed_img = process(last_image, src_img.copy())
       pred = model(torch.from_numpy(processed_img).cuda())
@@ -61,6 +64,10 @@ def test(model, is_fake=True):
             'true:', true, 
             'pred:', pred_target, 
             'target:', target)
+
+      disturb += true != pred_target
+      fake += target == pred_target
+      print(disturb, fake)
 
 
 def run_model(model):
@@ -124,6 +131,8 @@ if __name__ == '__main__':
   models = [resnet.resnet50(pretrained=True, progress=True).eval().cuda(),
             mobilenet.mobilenet_v2(pretrained=True, progress=True).eval().cuda(),
             resnet.resnet152(pretrained=True, progress=True).eval().cuda(),]
+
+  models = [resnet.resnet152(pretrained=True, progress=True).eval().cuda(),]
             
   model = resnet.resnet50(pretrained=True, progress=True).eval().cuda()
 
